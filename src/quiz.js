@@ -56,4 +56,24 @@ class Quiz {
     //! this return all the time false except when currentQuestionIndex is equal to the questions array length
     return this.currentQuestionIndex === this.questions.length;
   }
+  //7. filterQuestionByDifficulty
+  filterQuestionsByDifficulty(difficulty) {
+    //! this.questions type = Array  //// this.questions = [{text: text1, choices: [], }, {text: text2, choices = [], answer: }]
+    //! question type = object
+
+    if (difficulty >= 1 && difficulty <= 3) {
+      this.questions = this.questions.filter(
+        (question) => question.difficulty === difficulty
+      );
+      return this.questions;
+    }
+  }
+  //8. Average difficulty
+  averageDifficulty() {
+    const totalDifficulty = this.questions.reduce(
+      (sum, question) => sum + question.difficulty,
+      0
+    );
+    return totalDifficulty / this.questions.length;
+  }
 }
