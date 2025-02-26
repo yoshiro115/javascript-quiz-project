@@ -196,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const restartButton = document.querySelector("#restartButton");
 
+  //! restart button
   restartButton.addEventListener("click", () => {
     endView.style.display = "none";
     quizView.style.display = "flex";
