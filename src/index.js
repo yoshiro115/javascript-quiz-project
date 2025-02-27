@@ -56,18 +56,23 @@ document.addEventListener("DOMContentLoaded", () => {
   /************  SHOW INITIAL CONTENT  ************/
 
   // Convert the time remaining in seconds to minutes and seconds, and pad the numbers with zeros if needed
+  //const timeRemainingContainer = document.getElementById("timeRemaining");
+  function showTimer() {
+    //! for exemple 2.3 => 2 => "2" => "02"
+    const minutes = Math.floor(quiz.timeRemaining / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
 
-  const minutes = Math.floor(quiz.timeRemaining / 60)
-    .toString()
-    .padStart(2, "0");
-  const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
-
-  // Display the time remaining in the time remaining container
-  const timeRemainingContainer = document.getElementById("timeRemaining");
-  timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+    // Display the time remaining in the time remaining container
+    const timeRemainingContainer = document.getElementById("timeRemaining");
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+  }
 
   // Show first question
   showQuestion();
+  // Show Timer for the first time
+  showTimer();
 
   /************  TIMER  ************/
 
@@ -179,7 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // nextButtonHandler();
   function showResults() {
     // YOUR CODE HERE:
-    //
+    // ! Stop The Timer interval
+    clearInterval(timerInterval);
     // 1. Hide the quiz view (div#quizView)
     quizView.style.display = "none";
 
@@ -202,7 +208,31 @@ document.addEventListener("DOMContentLoaded", () => {
     quizView.style.display = "flex";
     quiz.currentQuestionIndex = 0;
     quiz.correctAnswers = 0;
+    //restart Timer
+    quiz.timeRemaining = quiz.timeLimit;
     quiz.shuffleQuestions();
+    //! Show the Question
     showQuestion();
+    //! Show the Timer Start
+    showTimer();
+    //! Set The timer Intervalle
+    startTimer();
   });
+  // ! let timer;
+  startTimer();
+  // Interval TIMER
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      quiz.timeRemaining--;
+      showTimer();
+      if (quiz.timeRemaining === 0) {
+        clearInterval(timerInterval);
+        showResults();
+      }
+    }, 1000);
+  }
+
+  //!DONT WRITE AFTER THIS
 });
+//! THIS IS THE END
