@@ -15,8 +15,21 @@ body {
 
 header {
   padding: 0 20px;
-}
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
+}
+#timer{
+  background-color: #46a049;
+  color: white;
+  width: 6rem;
+  height: 3rem;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 3rem;
+  
+}
 .container {
   height: 540px;
   max-width: 600px;

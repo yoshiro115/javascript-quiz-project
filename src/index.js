@@ -57,6 +57,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Convert the time remaining in seconds to minutes and seconds, and pad the numbers with zeros if needed
   //const timeRemainingContainer = document.getElementById("timeRemaining");
+  //! for exemple 2.3 => 2 => "2" => "02"
+  const minutes = Math.floor(quiz.timeRemaining / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+
+  // Display the time remaining in the time remaining container
+  const timeRemainingContainer = document.getElementById("timeRemaining");
+  timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+
+  // Show first question
+  showQuestion();
+  // Show Timer for the first time
+
+  /************  TIMER  ************/
+  const timer = document.getElementById("timer");
+
+  showTimer();
+
   function showTimer() {
     //! for exemple 2.3 => 2 => "2" => "02"
     const minutes = Math.floor(quiz.timeRemaining / 60)
@@ -65,18 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
 
     // Display the time remaining in the time remaining container
-    const timeRemainingContainer = document.getElementById("timeRemaining");
-    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+    const timer = document.getElementById("timer");
+    timer.innerText = `${minutes}:${seconds}`;
   }
-
-  // Show first question
-  showQuestion();
-  // Show Timer for the first time
-  showTimer();
-
-  /************  TIMER  ************/
-
-  let timer;
 
   /************  EVENT LISTENERS  ************/
 
@@ -204,28 +214,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //! restart button
   restartButton.addEventListener("click", () => {
+    //!Hide the endview
     endView.style.display = "none";
+
+    //! show the quizView
     quizView.style.display = "flex";
+
+    //!restart the current Question
     quiz.currentQuestionIndex = 0;
+
+    //! restart The result
     quiz.correctAnswers = 0;
-    //restart Timer
+
+    //! restart Timer with quizDuration
     quiz.timeRemaining = quiz.timeLimit;
+
+    //! shuffle all question
     quiz.shuffleQuestions();
+
     //! Show the Question
     showQuestion();
+
     //! Show the Timer Start
     showTimer();
+
     //! Set The timer Intervalle
     startTimer();
   });
   // ! let timer;
-  startTimer();
-  // Interval TIMER
 
+  // Interval TIMER start
+  startTimer();
+
+  // function start timer interval
   function startTimer() {
     timerInterval = setInterval(() => {
       quiz.timeRemaining--;
       showTimer();
+      if (quiz.timeRemaining === 60) {
+        timer.style.backgroundColor = "orange";
+      }
+      if (quiz.timeRemaining === 10) {
+        timer.style.backgroundColor = "red";
+      }
       if (quiz.timeRemaining === 0) {
         clearInterval(timerInterval);
         showResults();
